@@ -41,6 +41,8 @@ public class Cliente implements Serializable {
 	@ElementCollection //setar no banco telefones como entidade fraca
 	@CollectionTable(name = "TELEFONE") //criar tabela auxiliar no banco
 	private Set<String> telefones = new HashSet<>(); //conjunto de string
+	
+	private List<Pedido> pedidos = new ArrayList<>();
 
 	public Cliente() {
 	}
@@ -113,6 +115,14 @@ public class Cliente implements Serializable {
 
 	public void setTelefones(Set<String> telefones) {
 		this.telefones = telefones;
+	}
+
+	public List<Pedido> getPedidos() {
+		return pedidos;
+	}
+
+	public void setPedidos(List<Pedido> pedidos) {
+		this.pedidos = pedidos;
 	}
 
 	@Override
