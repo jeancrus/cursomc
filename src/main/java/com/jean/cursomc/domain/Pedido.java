@@ -2,6 +2,8 @@ package com.jean.cursomc.domain;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -10,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -37,7 +40,15 @@ public class Pedido implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "cliente_id")
 	private Cliente cliente;
+	
+	/*
+	 * A entidade pedido precisa conhecer os itenspedido associado a ela
+	 * e para isso é feito um set com itempedido
+	 */
 
+	@OneToMany(mappedBy = "id.pedido") //id.pedido pois ele pega o id do item pedido e então acessa atraves dele o pedido do item pedido
+	private Set<ItemPedido> itens = new HashSet<>();
+	
 	public Pedido() {
 	}
 
@@ -89,6 +100,14 @@ public class Pedido implements Serializable {
 		this.cliente = cliente;
 	}
 
+	public Set<ItemPedido> getItens() {
+		return itens;
+	}
+
+	public void setItens(Set<ItemPedido> itens) {
+		this.itens = itens;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -113,6 +132,8 @@ public class Pedido implements Serializable {
 			return false;
 		return true;
 	}
+
+	
 	
 	
 	

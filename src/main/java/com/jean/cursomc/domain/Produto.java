@@ -2,7 +2,9 @@ package com.jean.cursomc.domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -33,6 +36,15 @@ public class Produto implements Serializable {
 	)
 	private List<Categoria> categorias = new ArrayList<>();
 	
+	/*
+	 * A entidade produto precisa conhecer os itenspedido associado a ela
+	 * e para isso é feito um set com itempedido
+	 * conhece os itens relacionados a ele
+	 */
+	
+	@OneToMany(mappedBy = "id.produto") //assim como no pedido, por ser chave composta de itempedido, o itempedido pk
+	private Set<ItemPedido> itens = new HashSet<>(); 
+	
 	public Produto () {
 		
 	}
@@ -43,6 +55,13 @@ public class Produto implements Serializable {
 		this.preco = preco;
 	}
 	
+	public List<Pedido> getPedidos() { //getPedidos pois é padrão beans ter o metodo iniciado com get
+		List<Pedido> lista = new ArrayList<>();
+		for (ItemPedido x : itens) {
+			lista.add(x.getPedido());
+		}
+		return lista;
+	}
 	
 	public List<Categoria> getCategorias() {
 		return categorias;
@@ -75,6 +94,14 @@ public class Produto implements Serializable {
 	public void setPreco(Double preco) {
 		this.preco = preco;
 	}
+	
+	public Set<ItemPedido> getItens() {
+		return itens;
+	}
+
+	public void setItens(Set<ItemPedido> itens) {
+		this.itens = itens;
+	}
 
 	@Override
 	public int hashCode() {
@@ -100,6 +127,7 @@ public class Produto implements Serializable {
 			return false;
 		return true;
 	}
+
 	
 	
 }
