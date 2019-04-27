@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -20,25 +22,29 @@ public class Pedido implements Serializable {
 	private Integer id;
 	private Date instante;
 	
-	@OneToOne(cascade = CascadeType.ALL, mappedBy = "pedido")
+	
 	/*
 	 * irá precisar do cascade pois sem ele irá ter problema de transiente quando salvar
 	 * um pedido e o pagamento dele
 	 */
+	@OneToOne(cascade = CascadeType.ALL, mappedBy = "pedido")
 	private Pagamento pagamento;
 	
+	@ManyToOne
+	@JoinColumn(name = "endereco_de_entrega_id")
 	private Endereco enderecoDeEntrega;
 	
+	@ManyToOne
+	@JoinColumn(name = "cliente_id")
 	private Cliente cliente;
 
 	public Pedido() {
 	}
 
-	public Pedido(Integer id, Date instante, Pagamento pagamento, Endereco enderecoDeEntrega, Cliente cliente) {
+	public Pedido(Integer id, Date instante, Endereco enderecoDeEntrega, Cliente cliente) {
 		super();
 		this.id = id;
 		this.instante = instante;
-		this.pagamento = pagamento;
 		this.enderecoDeEntrega = enderecoDeEntrega;
 		this.cliente = cliente;
 	}

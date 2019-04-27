@@ -35,13 +35,14 @@ public class Cliente implements Serializable {
 	private List<Endereco> enderecos = new ArrayList<>();
 	
 	/*
-	 * Através do set(propriedade da classe) garante que o conjunto de strings não terá
+	 * Através do set<>(propriedade da classe) garante que o conjunto de strings não terá
 	 * repetição, assim podendo fazer vários numeros sem serem repetidos
 	 */
 	@ElementCollection //setar no banco telefones como entidade fraca
 	@CollectionTable(name = "TELEFONE") //criar tabela auxiliar no banco
 	private Set<String> telefones = new HashSet<>(); //conjunto de string
 	
+	@OneToMany(mappedBy = "cliente")
 	private List<Pedido> pedidos = new ArrayList<>();
 
 	public Cliente() {
