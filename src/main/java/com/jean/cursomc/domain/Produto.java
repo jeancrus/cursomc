@@ -16,6 +16,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Produto implements Serializable {
@@ -42,6 +43,7 @@ public class Produto implements Serializable {
 	 * conhece os itens relacionados a ele
 	 */
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "id.produto") //assim como no pedido, por ser chave composta de itempedido, o itempedido pk
 	private Set<ItemPedido> itens = new HashSet<>(); 
 	
@@ -55,6 +57,7 @@ public class Produto implements Serializable {
 		this.preco = preco;
 	}
 	
+	@JsonIgnore //tudo que estiver com get é serializado, por isso é usado o ignore
 	public List<Pedido> getPedidos() { //getPedidos pois é padrão beans ter o metodo iniciado com get
 		List<Pedido> lista = new ArrayList<>();
 		for (ItemPedido x : itens) {
