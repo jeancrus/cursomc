@@ -5,11 +5,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -60,6 +62,20 @@ public class CategoriaResource {
 		 * através do método stream.map coloca uma função nova que recebe obj como parametro
 		 * e finaliza voltando essa função como lista através do collect Collectors.toList
 		 */
+		return ResponseEntity.ok().body(listDto);
+	}
+	
+	/*
+	 * Metodo utilizado para limitar paginação
+	 */
+	@RequestMapping(value = "/page", method = RequestMethod.GET)
+	public ResponseEntity<Page<CategoriaDTO>> findPage(
+			@RequestParam(name = "page", defaultValue = "0") Integer page, 
+			@RequestParam(name = "linesPerPage", defaultValue = "24") Integer linesPerPage, 
+			@RequestParam(name = "orderBy", defaultValue = "nome") String orderBy, 
+			@RequestParam(name = "direction", defaultValue = "ASC") String direction) {
+		Page<Categoria> list = service.findPage(page, linesPerPage, orderBy, direction); //buscando as listas do banco para converter para dto
+		Page<CategoriaDTO> listDto = list.map(obj -> new CategoriaDTO(obj)); //por ser java 8, o page não precisa de collectors e stream
 		return ResponseEntity.ok().body(listDto);
 	}
 }
