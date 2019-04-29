@@ -38,6 +38,7 @@ public class ResourceExceptionHandler {
 	public ResponseEntity<StandardError> validation(MethodArgumentNotValidException e, HttpServletRequest request) {
 		
 		/*
+		 * Neste caso, não foi feita uma classe personalizada, foi pega uma classe direta do spring framework
 		 * Como sai uma lista de erros, é necessário criar uma nova classe para guardar essa lista de errors
 		 * e após fazer uma leitura dos erros através do getBindingResult.getFielderrors
 		 * jogando para a variáver err da classe ValidationError

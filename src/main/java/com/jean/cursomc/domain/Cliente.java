@@ -55,7 +55,8 @@ public class Cliente implements Serializable {
 		this.nome = nome;
 		this.email = email;
 		this.cpfOuCnpj = cpfOuCnpj;
-		this.tipo = tipo.getCod();
+		this.tipo = (tipo == null) ? null : tipo.getCod(); //diferente de categoria, foi inserido condição para que não dê nullpointer 
+		//na hora de atualizar um cliente, pois teria que fazer null para cpf e tipo
 	}
 
 	public Integer getId() {
