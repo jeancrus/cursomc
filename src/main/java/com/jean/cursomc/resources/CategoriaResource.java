@@ -1,6 +1,8 @@
 package com.jean.cursomc.resources;
 
 import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.jean.cursomc.domain.Categoria;
+import com.jean.cursomc.dto.CategoriaDTO;
 import com.jean.cursomc.services.CategoriaService;
 
 @RestController
@@ -47,5 +50,16 @@ public class CategoriaResource {
 	public ResponseEntity<Void> delete(@PathVariable Integer id) {
 		service.delete(id);
 		return ResponseEntity.noContent().build();
+	}
+	
+	@RequestMapping(method = RequestMethod.GET)
+	public ResponseEntity<List<CategoriaDTO>> findAll() {
+		List<Categoria> list = service.findAll(); //buscando as listas do banco para converter para dto
+		List<CategoriaDTO> listDto = list.stream().map(obj -> new CategoriaDTO(obj)).collect(Collectors.toList());
+		/*ListDto == funcão para converter uma lista em outra lista!
+		 * através do método stream.map coloca uma função nova que recebe obj como parametro
+		 * e finaliza voltando essa função como lista através do collect Collectors.toList
+		 */
+		return ResponseEntity.ok().body(listDto);
 	}
 }
