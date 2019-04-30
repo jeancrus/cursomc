@@ -32,7 +32,7 @@ public class ClienteService {
 		Cliente newObj = find(obj.getId()); //procura o obj cliente.id e insere no newobj
 		updateData(newObj, obj); //inserido para que não dê nullpointerexception na alteração de um cliente
 		//update data foi inserido como novo método
-		return repo.save(newObj);
+		return repo.save(newObj); //alteração pelo banco
 	}
 	
 	public void delete(Integer id) {
@@ -56,7 +56,7 @@ public class ClienteService {
 	}
 	
 	public Cliente fromDTO(ClienteDTO objDto) {
-		return new Cliente(objDto.getId(), objDto.getNome(), objDto.getEmail(), null, null);
+		return new Cliente(objDto.getId(), objDto.getNome(), objDto.getEmail(), null, null); //não instancia do banco de dados
 	}
 	
 	private void updateData(Cliente newObj, Cliente obj) {

@@ -34,8 +34,10 @@ public class CategoriaService {
 	}
 	
 	public Categoria update(Categoria obj) {
-		find(obj.getId());
-		return repo.save(obj);
+		Categoria newObj = find(obj.getId()); //procura o obj cliente.id e insere no newobj
+		updateData(newObj, obj); //inserido para que não dê nullpointerexception na alteração de um cliente
+		//update data foi inserido como novo método
+		return repo.save(newObj); //alteração pelo banco
 	}
 	
 	public void delete(Integer id) {
@@ -61,5 +63,9 @@ public class CategoriaService {
 	public Categoria fromDTO(CategoriaDTO objDto) {
 		return new Categoria(objDto.getId(), objDto.getNome());
 	}
+	
+	private void updateData(Categoria newObj, Categoria obj) {
+		newObj.setNome(obj.getNome());
+	}// novo metodo inserido para que somente o email e nome sejam alterados
 	
 }
