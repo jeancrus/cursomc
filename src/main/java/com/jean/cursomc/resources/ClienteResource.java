@@ -1,5 +1,6 @@
 package com.jean.cursomc.resources;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -8,15 +9,18 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.jean.cursomc.domain.Cliente;
 import com.jean.cursomc.dto.ClienteDTO;
+import com.jean.cursomc.dto.ClienteNewDTO;
 import com.jean.cursomc.services.ClienteService;
 
 @RestController
@@ -30,6 +34,16 @@ public class ClienteResource {
 	public ResponseEntity<Cliente> find(@PathVariable Integer id) {
 		Cliente obj = service.find(id);
 		return ResponseEntity.ok().body(obj);
+	}
+	
+	@Transactional
+	@RequestMapping(method = RequestMethod.POST) //mapeado para que seja reconhecido no endpoint categorias
+	public ResponseEntity<Void> insert(@Valid @RequestBody ClienteNewDTO objDto) { //request body pois necessário para que o json seja reconhecido automaticamente para o java
+		Cliente obj = service.fromDTO(objDto);
+		obj = service.insert(obj);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest() //Sendo feito para que a / após a categoria seja acrescentada o id novo inserido
+				.path("/{id}").buildAndExpand(obj.getId()).toUri(); //do banco de dados 
+		return ResponseEntity.created(uri).build();
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT) //atualizar
@@ -70,4 +84,6 @@ public class ClienteResource {
 		Page<ClienteDTO> listDto = list.map(obj -> new ClienteDTO(obj)); //por ser java 8, o page não precisa de collectors e stream
 		return ResponseEntity.ok().body(listDto);
 	}
+	
+	
 }
