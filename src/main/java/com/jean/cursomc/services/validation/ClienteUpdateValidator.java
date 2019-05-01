@@ -12,14 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerMapping;
 
 import com.jean.cursomc.domain.Cliente;
-import com.jean.cursomc.domain.enums.TipoCliente;
 import com.jean.cursomc.dto.ClienteDTO;
-import com.jean.cursomc.dto.ClienteNewDTO;
 import com.jean.cursomc.repositories.ClienteRepository;
 import com.jean.cursomc.resources.exception.FieldMessage;
-import com.jean.cursomc.services.validation.utils.BR;
 
-public class ClientUpdateValidator implements ConstraintValidator<ClienteUpdate, ClienteDTO> {
+public class ClienteUpdateValidator implements ConstraintValidator<ClienteUpdate, ClienteDTO> {
 	
 	@Autowired
 	private HttpServletRequest request; //tem função para obter o parametro da URI
