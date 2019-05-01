@@ -50,6 +50,10 @@ public class ItemPedido  implements Serializable{
 	}
 	*/
 	
+	public Double getSubTotal() {
+		return (preco - desconto) * quantidade;
+	}
+	
 	@JsonIgnore
 	public Pedido getPedido() { //feito gets para ter acesso direto a pedidos fora da classe,sendo melhor que ter que chamar o id, pra então pegar o produto ou pedido
 		return id.getPedido();
