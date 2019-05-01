@@ -11,6 +11,7 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.jean.cursomc.domain.enums.EstadoPagamento;
 
 
@@ -21,6 +22,7 @@ import com.jean.cursomc.domain.enums.EstadoPagamento;
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED) //Dois tipos de tabela, tabelas separadas ou tabelão e deve ser escrito na superclasse
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type")
 public abstract class Pagamento implements Serializable {
 /*
  * Abstract pois não queremos que o pagamento possa ser instanciada
